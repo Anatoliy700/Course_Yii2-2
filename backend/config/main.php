@@ -51,6 +51,13 @@ return [
             'rules' => [
             ],
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@app/themes/adminlte/views'
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

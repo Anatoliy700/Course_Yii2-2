@@ -14,10 +14,14 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "2amigos/yii2-transliterator-helper": "*",
+        "yiisoft/yii2-jui": "~2.0.0",
+        "yiisoft/yii2-imagine": "^2.1",
+        "dmstr/yii2-adminlte-asset": "2.*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -37,5 +41,11 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "themes\\": "backend\\themes",
+            "app\\": ""
+        }
+    }
 }
