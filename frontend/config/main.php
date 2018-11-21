@@ -51,5 +51,10 @@ return [
             ],
         ],
     ],
+    'modules' => [
+        'lk' => [
+            'class' => \frontend\modules\lk\Lk::class,
+        ],
+    ],
     'params' => $params,
 ];
