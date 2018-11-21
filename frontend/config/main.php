@@ -18,11 +18,19 @@ return [
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'identityCookie' => [
+                'name' => $params['identityCookieName'],
+                'httpOnly' => true,
+                'domain' => $params['cookieDomain']
+            ],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the frontend
-            'name' => 'advanced-frontend',
+            // this is the name of the session cookie used for login on the backend
+            'name' => $params['sessionCookieName'],
+            'cookieParams' => [
+                'httpOnly' => true,
+                'domain' => $params['cookieDomain']
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -36,14 +44,17 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+    ],
+    'modules' => [
+        'lk' => [
+            'class' => \frontend\modules\lk\Lk::class,
+        ],
     ],
     'params' => $params,
 ];

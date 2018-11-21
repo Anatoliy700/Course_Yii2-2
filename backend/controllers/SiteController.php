@@ -1,6 +1,8 @@
 <?php
+
 namespace backend\controllers;
 
+use yii\helpers\ArrayHelper;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -10,27 +12,31 @@ use common\models\LoginForm;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends AdminController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
+    public function behaviors() {
+       $behaviors = [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login'],
                         'allow' => true,
+                        'roles' => ['?']
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['@']
                     ],
-                ],
+                    [
+                        'actions' => ['error'],
+                        'allow' => true,
+                    ]
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -39,62 +45,60 @@ class SiteController extends Controller
                 ],
             ],
         ];
+    
+        return ArrayHelper::merge(parent::behaviors(), $behaviors);
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
     }
-
+    
     /**
      * Displays homepage.
      *
      * @return string
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
     }
-
+    
     /**
      * Login action.
      *
      * @return string
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
             $model->password = '';
-
+            
             return $this->render('login', [
                 'model' => $model,
             ]);
         }
     }
-
+    
     /**
      * Logout action.
      *
      * @return string
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
-
+        
         return $this->goHome();
     }
 }
