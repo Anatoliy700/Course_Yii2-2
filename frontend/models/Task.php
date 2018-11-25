@@ -15,7 +15,7 @@ class Task extends Model
     
     public function rules() {
         return [
-            [['id'], 'integer', 'min' => 1],
+            [['id', 'user_id'], 'integer', 'min' => 1],
             [['title', 'description', 'user_id'], 'required'],
             ['date', 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'текущей'],
             ['title', 'string', 'length' => [5, 10]],
