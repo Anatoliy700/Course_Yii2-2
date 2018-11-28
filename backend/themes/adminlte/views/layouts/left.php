@@ -41,6 +41,7 @@
                     ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['user/index']],
                     ['label' => 'Задачи', 'icon' => 'tasks', 'url' => ['task/index']],
                     ['label' => 'Изображения', 'icon' => 'file-image-o', 'url' => ['image/index']],
+                    ['label' => 'Сообщения чата', 'icon' => 'file-image-o', 'url' => ['chat-messages/index']],
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],

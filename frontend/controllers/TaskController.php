@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 
+use common\models\search\ChatMessagesSearch;
+use common\models\tables\ChatMessages;
 use common\models\tables\Users;
 use frontend\models\Task;
 use yii\filters\AccessControl;
@@ -66,10 +68,15 @@ class TaskController extends Controller
         $model = Tasks::findOne($id);
         $imageModel = new Image();
         $dataProvider = Image::getDataProvider($id);
+        $chatMessageModel = new ChatMessages();
+        $chatDataProvider = (new ChatMessagesSearch())
+            ->search(['ChatMessagesSearch' => ['task_id' => (int)$id]]);
         return $this->render('view', [
             'model' => $model,
             'dataProvider' => $dataProvider,
             'imageModel' => $imageModel,
+            'chatMessageModel' => $chatMessageModel,
+            'chatDataProvider' => $chatDataProvider,
         ]);
     }
     
@@ -105,7 +112,7 @@ class TaskController extends Controller
             $imageModel = new Image();
             $imageModel->image = UploadedFile::getInstance($imageModel, 'image');
             
-            if(!$imageModel->upload($id)){
+            if (!$imageModel->upload($id)) {
             
             }
             return $this->redirect(['view', 'id' => $id]);
