@@ -3,7 +3,7 @@ return [
     //'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
         '@imgPath' => dirname(dirname(__DIR__)) . '/common/images',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -22,6 +22,9 @@ return [
         ],
         'authManager' => [
             'class' => \yii\rbac\DbManager::class,
+        ],
+        'assetManager' => [
+            'linkAssets' => true,
         ],
     ],
 ];
