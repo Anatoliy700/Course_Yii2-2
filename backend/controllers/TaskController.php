@@ -21,7 +21,7 @@ class TaskController extends AdminController
    * @return mixed
    */
   public function actionIndex() {
-    $searchModel = new TaskSearch();
+    $searchModel = new TaskSearch(['pageSize' => 2]);
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     
     return $this->render('index', [
