@@ -88,7 +88,7 @@ class Users extends ActiveRecord
         return $this->hasOne(Roles::className(), ['id' => 'role_id']);
     }
     
-    static public function getArrAllUsers() {
+    static public function getUsersSelect() {
         return ArrayHelper::map(self::find()->all(), 'id', 'username');
     }
 }

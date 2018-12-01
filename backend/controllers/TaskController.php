@@ -49,7 +49,7 @@ class TaskController extends AdminController
    */
   public function actionCreate() {
     $model = new Task();
-    $users = Users::getArrAllUsers();
+    $users = Users::getUsersSelect();
     
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['view', 'id' => $model->id]);
@@ -70,7 +70,7 @@ class TaskController extends AdminController
    */
   public function actionUpdate($id) {
     $model = $this->findModel($id);
-    $users = Users::getArrAllUsers();
+    $users = Users::getUsersSelect();
     
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
       return $this->redirect(['view', 'id' => $model->id]);

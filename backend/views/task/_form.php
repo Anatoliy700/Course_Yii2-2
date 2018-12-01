@@ -28,6 +28,10 @@ use yii\widgets\ActiveForm;
         ]
     ]) ?>
     
+    <?= $form->field($model, 'status_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'project_id')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'user_id')->dropDownList($users) ?>
 
     <div class="form-group">

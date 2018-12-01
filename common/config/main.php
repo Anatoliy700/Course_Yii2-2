@@ -15,7 +15,7 @@ return [
             'translations' => [
                 'app*' => [
                     'class' => \yii\i18n\PhpMessageSource::class,
-                    'basePath' => '@app/messages',
+                    'basePath' => '@app/../common/messages',
                     'sourceLanguage' => 'ru-RU',
                 ]
             ]

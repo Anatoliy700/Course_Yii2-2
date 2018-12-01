@@ -12,15 +12,18 @@ class Task extends Model
     public $title;
     public $description;
     public $user_id;
+    public $project_id;
+    public $status_id;
+    public $project;
     
     public function rules() {
         return [
-            [['id', 'user_id'], 'integer', 'min' => 1],
-            [['title', 'description', 'user_id'], 'required'],
+            [['id', 'user_id', 'project_id', 'status_id'], 'integer', 'min' => 1],
+            [['title', 'description', 'user_id', 'project_id', 'status_id'], 'required'],
             ['date', 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'текущей'],
             ['title', 'string', 'length' => [5, 10]],
-            //['title', 'app\components\validators\TaskStringValidator', 'length' => [5, 20], 'startWord' => 'Сделать'],
-            ['description', 'string', 'min' => 5]
+            ['description', 'string', 'min' => 5],
+            [['project'], 'safe'],
         ];
     }
     
@@ -47,6 +50,7 @@ class Task extends Model
         $model = Tasks::findOne($id);
         $task = new static();
         $task->setAttributes($model->attributes);
+        $task->project = $model->project;
         return $task;
     }
     
@@ -56,6 +60,8 @@ class Task extends Model
             'title' => 'Задача',
             'description' => 'Описание',
             'user_id' => 'Пользователь',
+            'status_id' => 'Статус',
+            'project_id' => 'Проект'
         ];
     }
 }
