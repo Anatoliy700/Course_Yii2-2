@@ -2,6 +2,7 @@
 
 use yii\widgets\DetailView;
 use \yii\helpers\Html;
+use common\models\tables\Tasks;
 
 /* @var $model \frontend\models\Task */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
@@ -10,8 +11,8 @@ use \yii\helpers\Html;
 /* @var $chatDataProvider \yii\data\ActiveDataProvider */
 /* @var $chatMessageModel \common\models\tables\ChatMessages */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Задачи', 'url' => ["index"]];
+$this->title = "{$model->title} в {$model->project->name}";
+$this->params['breadcrumbs'][] = ['label' => "Задачи в {$model->project->name}", 'url' => ['index', 'project_id' => $model->project_id]];
 $this->params['breadcrumbs'][] = $this->title;
 
 frontend\assets\TaskViewAsset::register($this);
@@ -20,19 +21,49 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
 ?>
 
 <div class="left-content col-lg-8">
+    <?php \yii\widgets\Pjax::begin() ?>
     <p>
         <?php if (Yii::$app->user->can('updateTask')): ?>
-            <?= Html::a(Yii::t('app/main', 'Изменить'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(
+                Yii::t('app/main', 'Изменить'),
+                ['update', 'id' => $model->id],
+                ['class' => 'btn btn-primary']
+            ) ?>
         <?php endif; ?>
         <?php if (Yii::$app->user->can('deleteTask')): ?>
-            <?= Html::a(Yii::t('app/main', 'Удалить'), ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => 'Вы хотите удалить?',
-                    'method' => 'post',
-                ],
-            ]) ?>
+            <?= Html::a(
+                Yii::t('app/main', 'Удалить'),
+                ['delete', 'id' => $model->id],
+                [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Вы хотите удалить?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
         <?php endif; ?>
+        <?php if ($model->status_id === Tasks::STATUS_COMPLETE) {
+            echo Html::tag(
+                'span',
+                'Завершено',
+                [
+                    'class' => 'btn btn-success',
+                    'disabled' => true,
+                ]
+            );
+        } else {
+            echo Html::a(
+                'Завершить',
+                ['task-complete', 'id' => $model->id],
+                [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                        'confirm' => 'Отметить задачу как завершенную?',
+                        'method' => 'post',
+                        'pjax' => '',
+                    ],
+                ]);
+        } ?>
     </p>
 
 
@@ -44,13 +75,17 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
                 'date:date',
                 'description',
                 'username',
+                'projectName',
+                'statusName',
                 'created_at',
                 'updated_at',
             ]
         ]) ?>
     </div>
-
-    <div class="task-images-wrap clearfix">
+    <?php \yii\widgets\Pjax::end() ?>
+    
+    <?php \yii\widgets\Pjax::begin() ?>
+    <div class="task-images-wrap row">
         <?= \yii\widgets\ListView::widget([
             'dataProvider' => $dataProvider,
             'itemView' => 'imageItem',
@@ -74,13 +109,14 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
             ]) ?>
         </div>
     <?php endif; ?>
+    <?php \yii\widgets\Pjax::end() ?>
 </div>
 <div class="right-content col-lg-4">
     <div class="wraps-chat">
         <div class="box box-primary direct-chat direct-chat-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Task Chat</h3>
-                <h6 id="chat-connected" class="box-title pull-right">Disconnect</h6>
+                <h6 id="chat-connected" class="box-title pull-right">Disconnected</h6>
             </div>
             <div class="box-body">
                 <?= \yii\widgets\ListView::widget([

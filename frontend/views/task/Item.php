@@ -7,4 +7,6 @@
   <p class="bg-success"><?= $model->date ?></p>
   <p class="bg-info"><?= $model->description ?></p>
   <p class="bg-info"><?= $model->username ?></p>
+  <p class="bg-info"><?= $model->project->name ?></p>
+  <p class="bg-info"><?= $model->status->name ?></p>
 </div>

@@ -16,7 +16,11 @@ use yii\helpers\ArrayHelper;
  * @property string $description
  * @property string $date
  * @property int $user_id
+ * @property int $status_id
+ * @property int $project_id
  * @property string $username
+ * @property Projects $project
+ * @property TaskStatuses $status
  * @property string $created_at
  * @property string $updated_at
  *
@@ -25,6 +29,9 @@ use yii\helpers\ArrayHelper;
  */
 class Tasks extends ActiveRecord
 {
+    const STATUS_COMPLETE = 2;
+    const STATUS_IN_WORK = 1;
+    
     /**
      * {@inheritdoc}
      */
@@ -47,8 +54,8 @@ class Tasks extends ActiveRecord
      */
     public function rules() {
         return [
-            [['title', 'description', 'date'], 'required'],
-            [['user_id'], 'integer'],
+            [['title', 'description', 'date', 'status_id', 'project_id'], 'required'],
+            [['user_id', 'status_id', 'project_id'], 'integer'],
             [['date', 'created_at', 'updated_at'], 'safe'],
             [['title'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
@@ -68,8 +75,12 @@ class Tasks extends ActiveRecord
             'date' => Yii::t('app/tables', 'Дата'),
             'user_id' => Yii::t('app/tables', 'Пользователь'),
             'username' => Yii::t('app/tables', 'Пользователь'),
+            'status_id' => Yii::t('app/tables', 'Статус'),
+            'project_id' => Yii::t('app/tables', 'Проект'),
             'created_at' => Yii::t('app/tables', 'Дата создания'),
             'updated_at' => Yii::t('app/tables', 'Дата обновления'),
+            'projectName' => Yii::t('app/tables', 'Проект'),
+            'statusName' => Yii::t('app/tables', 'Статус'),
         ];
     }
     
@@ -84,6 +95,14 @@ class Tasks extends ActiveRecord
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
     
+    public function getProject() {
+        return $this->hasOne(Projects::class, ['id' => 'project_id']);
+    }
+    
+    public function getStatus() {
+        return $this->hasOne(TaskStatuses::class, ['id' => 'status_id']);
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -93,6 +112,14 @@ class Tasks extends ActiveRecord
     
     public function getUsername() {
         return $this->user->username;
+    }
+    
+    public function getProjectName(){
+        return $this->project->name;
+    }
+    
+    public function getStatusName(){
+        return $this->status->name;
     }
     
     static public function getArrAllTasks() {

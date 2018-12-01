@@ -46,6 +46,9 @@ class RoleSearch extends Roles
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 1
+            ]
         ]);
 
         $this->load($params);

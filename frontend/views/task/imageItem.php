@@ -21,6 +21,7 @@ use \yii\helpers\Html;
             'data' => [
                 'confirm' => 'Удалить картинку?',
                 'method' => 'post',
+                'pjax' => ''
             ]
         ]) ?>
     <?php endif; ?>

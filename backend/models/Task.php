@@ -15,8 +15,8 @@ class Task extends Tasks
     
     public function rules() {
         return [
-            //[['id'], 'integer', 'min' => 1],
-            [['title', 'description', 'user_id'], 'required'],
+            [['title', 'description', 'user_id', 'status_id', 'project_id'], 'required'],
+            [[ 'user_id', 'status_id', 'project_id'], 'integer', 'min' => 1],
             ['date', 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d'), 'minString' => 'текущей'],
             ['title', 'string', 'length' => [5, 10]],
             //['title', 'app\components\validators\TaskStringValidator', 'length' => [5, 20], 'startWord' => 'Сделать'],

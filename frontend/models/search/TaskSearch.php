@@ -19,7 +19,7 @@ class TaskSearch extends Tasks
      */
     public function rules() {
         return [
-            [['id', 'user_id'], 'integer'],
+            [['id', 'user_id', 'status_id', 'project_id'], 'integer'],
             [['title', 'description', 'date', 'username'], 'safe'],
         ];
     }
@@ -60,12 +60,15 @@ class TaskSearch extends Tasks
         }
         
         $query->with('user');
+        $query->with('project');
         
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             //'date' => $this->date,
             'user_id' => $this->user_id,
+            'project_id' => $this->project_id,
+            'status_id' => $this->status_id,
         ]);
         
         $query->andFilterWhere(['like', 'date', "{$this->date}"]);
