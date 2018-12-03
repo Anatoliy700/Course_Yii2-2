@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use console\models\TelegramReceive;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;

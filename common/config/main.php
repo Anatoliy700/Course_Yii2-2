@@ -8,6 +8,10 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'bot' => [
+            'class' => \SonkoDmitry\Yii\TelegramBot\Component::class,
+            'apiToken' => '673297753:AAHXjPpmbyQeckIteHSqwmglBRwhgpZ9MEo',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
