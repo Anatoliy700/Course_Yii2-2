@@ -1,12 +1,11 @@
 <?php
 
-namespace console\models;
+namespace common\components\telegram;
 
 
 use common\models\tables\TelegramCommands;
 use SonkoDmitry\Yii\TelegramBot\Component;
 use TelegramBot\Api\Types\Update;
-use yii\base\Model;
 
 /**
  * Class TelegramReceive
@@ -14,7 +13,7 @@ use yii\base\Model;
  * @property integer $offset
  * @package app\console\models
  */
-class TelegramReceive extends Model
+class TelegramReceive extends \yii\base\Component
 {
     private $_bot;
     private $_offset;
@@ -42,11 +41,12 @@ class TelegramReceive extends Model
         return $this->_bot;
     }
     
-    public function run() {
+    public static function run() {
+        $mod = new static();
         while (true) {
-            $messages = $this->bot->getUpdates($this->offset);
+            $messages = $mod->bot->getUpdates($mod->offset);
             if (count($messages) > 0) {
-                $this->save($messages);
+                $mod->save($messages);
             }
             sleep(0.5);
         }
