@@ -45,7 +45,7 @@ class TelegramCommands extends \yii\db\ActiveRecord
             [['update_id', 'command', 'chat_id', 'date'], 'required'],
             [['update_id', 'chat_id', 'done', 'date'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['command'], 'string', 'max' => 20],
+            [['command'], 'string'],
             [['update_id'], 'unique'],
         ];
     }

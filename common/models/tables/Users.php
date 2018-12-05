@@ -88,6 +88,20 @@ class Users extends ActiveRecord
         return $this->hasOne(Roles::className(), ['id' => 'role_id']);
     }
     
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubscriptions() {
+        return $this->hasMany(Subscriptions::class, ['user_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserChat() {
+        return $this->hasOne(UserChat::class, ['id' => 'user_id']);
+    }
+    
     static public function getUsersSelect() {
         return ArrayHelper::map(self::find()->all(), 'id', 'username');
     }

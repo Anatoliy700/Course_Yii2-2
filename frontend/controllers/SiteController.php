@@ -1,6 +1,9 @@
 <?php
 namespace frontend\controllers;
 
+use common\components\telegram\models\Subscription;
+use common\models\tables\Projects;
+use common\models\tables\Subscriptions;
 use console\models\TelegramReceive;
 use Yii;
 use yii\base\InvalidParamException;
@@ -73,8 +76,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        var_dump(new Projects([]));
         //return $this->render('index');
-        $this->redirect(['project/index']);
+//        $this->redirect(['project/index']);
     }
 
     /**

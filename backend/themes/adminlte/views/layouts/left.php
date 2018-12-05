@@ -47,6 +47,8 @@
                     ['label' => 'Проекты', 'icon' => 'file-image-o', 'activat', 'url' => ['project/index']],
                     ['label' => 'Телеграм', 'icon' => 'file-image-o', 'items' => [
                         ['label' => 'Комманды', 'url' => ['telegram-commands/index']],
+                        ['label' => 'Подписки', 'url' => ['subscription/index']],
+                        ['label' => 'Чаты пользователей', 'url' => ['user-chat/index']],
                     ]],
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],

@@ -3,7 +3,7 @@
 namespace common\components\telegram;
 
 
-use common\models\tables\TelegramCommands;
+use common\components\telegram\models\Commands;
 use SonkoDmitry\Yii\TelegramBot\Component;
 use TelegramBot\Api\Types\Update;
 
@@ -13,33 +13,9 @@ use TelegramBot\Api\Types\Update;
  * @property integer $offset
  * @package app\console\models
  */
-class TelegramReceive extends \yii\base\Component
+class TelegramReceive extends TelegramBase
 {
-    private $_bot;
     private $_offset;
-    
-    public function init() {
-        parent::init();
-        $this->setSetting();
-    }
-    
-    
-    protected function setSetting() {
-        \Yii::$app->db->createCommand('SET SESSION wait_timeout = 28800;')->execute();
-    
-        $this->bot->setProxy('178.238.227.29:3128');
-        $this->bot->setCurlOption(CURLOPT_HTTPHEADER, array('Expect:'));
-        $this->bot->setCurlOption(CURLOPT_CONNECTTIMEOUT, 10);
-        $this->bot->setCurlOption(CURLOPT_TIMEOUT, 10);
-        $this->bot->setCurlOption(CURLOPT_FOLLOWLOCATION, false);
-    }
-    
-    protected function getBot() {
-        if (is_null($this->_bot)) {
-            $this->_bot = \Yii::$app->bot;
-        }
-        return $this->_bot;
-    }
     
     public static function run() {
         $mod = new static();
@@ -55,9 +31,9 @@ class TelegramReceive extends \yii\base\Component
     protected function getOffset() {
         
         if (is_null($this->_offset)) {
-            $max = TelegramCommands::find()->max('update_id');
-            if ($max > 0) {
-                $this->offset = $max;
+            $lastId = Commands::getLastId();
+            if ($lastId > 0) {
+                $this->offset = $lastId;
             } else {
                 $this->_offset = 0;
             }
@@ -79,7 +55,7 @@ class TelegramReceive extends \yii\base\Component
                 'chat_id' => $message->getMessage()->getChat()->getId(),
                 'date' => $message->getMessage()->getDate(),
             ];
-            $model = new TelegramCommands($command);
+            $model = new Commands($command);
             if ($model->save()) {
                 $this->offset = $updateId;
             } else {

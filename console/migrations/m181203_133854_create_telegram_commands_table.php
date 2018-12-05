@@ -14,7 +14,7 @@ class m181203_133854_create_telegram_commands_table extends Migration
     {
         $this->createTable('telegram_commands', [
             'update_id' => $this->integer()->notNull(),
-            'command' => $this->string(20)->notNull(),
+            'command' => $this->string(255)->notNull(),
             'chat_id' => $this->integer(20)->notNull(),
             'done' => $this->boolean()->notNull()->defaultValue(false),
             'date' => $this->integer()->notNull(),
