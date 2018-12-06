@@ -44,7 +44,12 @@
                     ['label' => 'Сообщения чата', 'icon' => 'file-image-o', 'url' => ['chat-messages/index']],
                     ['label' => 'Статусы проекта', 'icon' => 'file-image-o', 'url' => ['project-statuses/index']],
                     ['label' => 'Статусы задач', 'icon' => 'file-image-o', 'url' => ['task-statuses/index']],
-                    ['label' => 'Проекты', 'icon' => 'file-image-o', 'url' => ['project/index']],
+                    ['label' => 'Проекты', 'icon' => 'file-image-o', 'activat', 'url' => ['project/index']],
+                    ['label' => 'Телеграм', 'icon' => 'file-image-o', 'items' => [
+                        ['label' => 'Комманды', 'url' => ['telegram-commands/index']],
+                        ['label' => 'Подписки', 'url' => ['subscription/index']],
+                        ['label' => 'Чаты пользователей', 'url' => ['user-chat/index']],
+                    ]],
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],

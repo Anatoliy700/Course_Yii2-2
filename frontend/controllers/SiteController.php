@@ -1,6 +1,10 @@
 <?php
 namespace frontend\controllers;
 
+use common\components\telegram\models\Subscription;
+use common\models\tables\Projects;
+use common\models\tables\Subscriptions;
+use console\models\TelegramReceive;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;

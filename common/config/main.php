@@ -1,6 +1,7 @@
 <?php
 return [
     //'language' => 'ru-RU',
+    'bootstrap' => ['telegramHandler'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -8,6 +9,13 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'telegramHandler' =>[
+            'class' => \common\components\telegram\eventHandlers\RegisterHandlers::class
+        ],
+        'bot' => [
+            'class' => \SonkoDmitry\Yii\TelegramBot\Component::class,
+            'apiToken' => '673297753:AAHXjPpmbyQeckIteHSqwmglBRwhgpZ9MEo',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
