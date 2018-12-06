@@ -45,16 +45,16 @@ class Subscription extends Model
             'user_id' => $this->getUserIdByChatId(),
             'subscribe_name' => $this->subscribe_name
         ]);
-        var_dump($subscribe);
         if (!is_null($subscribe)) {
             return $subscribe->delete();
         }
         return false;
     }
     
-    static public function getSubscriptions($subscription) {
+    static public function getSubscriptions($subscription, $user_id = null) {
         return Subscriptions::find()
             ->where(['subscribe_name' => $subscription])
+            ->andFilterWhere(['user_id' => $user_id])
             ->with('chat')
             ->all();
     }

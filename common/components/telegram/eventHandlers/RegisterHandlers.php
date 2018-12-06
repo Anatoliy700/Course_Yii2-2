@@ -10,6 +10,8 @@ class RegisterHandlers extends Component
     public function init() {
         parent::init();
         CreateProject::register();
+        UpdateProject::register();
+        CreateTask::register();
     }
     
 }

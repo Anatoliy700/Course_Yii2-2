@@ -76,9 +76,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        var_dump(new Projects([]));
         //return $this->render('index');
-//        $this->redirect(['project/index']);
+        $this->redirect(['project/index']);
     }
 
     /**

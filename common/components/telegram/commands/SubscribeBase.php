@@ -4,6 +4,7 @@ namespace common\components\telegram\commands;
 
 
 use common\components\telegram\eventHandlers\CreateProject;
+use common\components\telegram\eventHandlers\UpdateProject;
 use yii\helpers\ArrayHelper;
 
 abstract class SubscribeBase extends CommandBase
@@ -37,7 +38,7 @@ abstract class SubscribeBase extends CommandBase
             CreateProject::SUBSCRIBE_CREATE_PROJECT => [
                 'description' => 'Создание нового проекта',
             ],
-            'updateproject' => [
+            UpdateProject::SUBSCRIBE_UPDATE_PROJECT => [
                 'description' => 'Обновление проекта',
             ]
         ];
