@@ -1,6 +1,6 @@
 <?php
 return [
-    //'language' => 'ru-RU',
+//    'language' => 'ru-RU',
     'bootstrap' => ['telegramHandler'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

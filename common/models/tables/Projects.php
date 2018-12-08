@@ -67,6 +67,25 @@ class Projects extends \yii\db\ActiveRecord
         ];
     }
     
+    public function fields() {
+        return[
+            'id',
+            'name',
+            'user' => 'username',
+            'status' => 'statusName',
+            'created_at',
+            'updated_at',
+        ];
+    }
+    
+    public function getUsername(){
+        return $this->user->username;
+    }
+    
+    public function getStatusName(){
+        return $this->status->name;
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

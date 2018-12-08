@@ -85,7 +85,17 @@ class Tasks extends ActiveRecord
     }
     
     public function fields() {
-        return ['id', 'title', 'description', 'date'];
+        return [
+            'id',
+            'title',
+            'description',
+            'date',
+            'status' => 'statusName',
+            'user' => 'username',
+            'project' => 'projectName',
+            'created_at',
+            'updated_at',
+            ];
     }
     
     /**
