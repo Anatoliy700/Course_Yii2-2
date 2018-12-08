@@ -37,7 +37,7 @@ class HelpCommand extends CommandBase
                 $expectedParams = $item['class']::getExpectedParams();
                 if (count($expectedParams) > 0) {
                     $string .= $this->getString($expectedParams, 'param - ', false);
-                    $string .= "Пример: {$item['name']} param [param]" . PHP_EOL;
+                    $string .= "Пример: /{$key} param [param]" . PHP_EOL;
                 }
             }
             if ($emptyLine) {

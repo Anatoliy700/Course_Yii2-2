@@ -14,7 +14,7 @@ return [
         ],
         'bot' => [
             'class' => \SonkoDmitry\Yii\TelegramBot\Component::class,
-            'apiToken' => '673297753:AAHXjPpmbyQeckIteHSqwmglBRwhgpZ9MEo',
+            'apiToken' => require dirname(__DIR__) . '/components/telegram/apiToken.php',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
