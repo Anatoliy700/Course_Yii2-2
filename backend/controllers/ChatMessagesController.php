@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * ChatMessagesController implements the CRUD actions for ChatMessages model.
  */
-class ChatMessagesController extends Controller
+class ChatMessagesController extends AdminController
 {
     /**
      * {@inheritdoc}

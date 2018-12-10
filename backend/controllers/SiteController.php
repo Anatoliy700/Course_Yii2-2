@@ -2,6 +2,9 @@
 
 namespace backend\controllers;
 
+use backend\models\Task;
+use backend\models\Team;
+use backend\models\User;
 use yii\helpers\ArrayHelper;
 use Yii;
 use yii\web\Controller;
@@ -18,7 +21,7 @@ class SiteController extends AdminController
      * {@inheritdoc}
      */
     public function behaviors() {
-       $behaviors = [
+        $behaviors = [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
@@ -45,7 +48,7 @@ class SiteController extends AdminController
                 ],
             ],
         ];
-    
+        
         return ArrayHelper::merge(parent::behaviors(), $behaviors);
     }
     
@@ -66,6 +69,11 @@ class SiteController extends AdminController
      * @return string
      */
     public function actionIndex() {
+        $staticUsers = User::getStatisticUsers();
+        $teamsCount = Team::getCountTeams();
+//        var_dump(Task::getCountOverdueTasks(Task::DAY_ONE));
+        var_dump(Task::getStatisticTasks(Task::WEEK_ONE));
+        //exit();
         return $this->render('index');
     }
     

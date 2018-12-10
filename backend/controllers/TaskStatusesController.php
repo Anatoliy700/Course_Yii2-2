@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * TaskStatusesController implements the CRUD actions for TaskStatuses model.
  */
-class TaskStatusesController extends Controller
+class TaskStatusesController extends AdminController
 {
     /**
      * {@inheritdoc}

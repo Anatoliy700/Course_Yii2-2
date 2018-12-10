@@ -84,6 +84,13 @@ class Users extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getTeamUser() {
+        return $this->hasMany(TeamsUsers::class, ['user_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getRole() {
         return $this->hasOne(Roles::className(), ['id' => 'role_id']);
     }

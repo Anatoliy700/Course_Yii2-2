@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\tables\UserChat;
-use common\models\search\UserChatSearch;
+use common\models\tables\TeamsUsers;
+use common\models\search\TeamsUsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserChatController implements the CRUD actions for UserChat model.
+ * TeamsUsersController implements the CRUD actions for TeamsUsers model.
  */
-class UserChatController extends AdminController
+class TeamUserController extends AdminController
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class UserChatController extends AdminController
     }
 
     /**
-     * Lists all UserChat models.
+     * Lists all TeamsUsers models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserChatSearch();
+        $searchModel = new TeamsUsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class UserChatController extends AdminController
     }
 
     /**
-     * Displays a single UserChat model.
+     * Displays a single TeamsUsers model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,16 +58,16 @@ class UserChatController extends AdminController
     }
 
     /**
-     * Creates a new UserChat model.
+     * Creates a new TeamsUsers model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new UserChat();
+        $model = new TeamsUsers();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -76,7 +76,7 @@ class UserChatController extends AdminController
     }
 
     /**
-     * Updates an existing UserChat model.
+     * Updates an existing TeamsUsers model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,7 +87,7 @@ class UserChatController extends AdminController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -96,7 +96,7 @@ class UserChatController extends AdminController
     }
 
     /**
-     * Deletes an existing UserChat model.
+     * Deletes an existing TeamsUsers model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class UserChatController extends AdminController
     }
 
     /**
-     * Finds the UserChat model based on its primary key value.
+     * Finds the TeamsUsers model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return UserChat the loaded model
+     * @return TeamsUsers the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UserChat::findOne($id)) !== null) {
+        if (($model = TeamsUsers::findOne($id)) !== null) {
             return $model;
         }
 

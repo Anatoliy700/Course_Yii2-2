@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * TelegramCommandsController implements the CRUD actions for TelegramCommands model.
  */
-class TelegramCommandsController extends Controller
+class TelegramCommandsController extends AdminController
 {
     /**
      * {@inheritdoc}
