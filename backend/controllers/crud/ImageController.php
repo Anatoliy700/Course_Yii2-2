@@ -1,26 +1,46 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
-use common\models\tables\Roles;
+use backend\controllers\AdminController;
+use backend\models\Image;
+use backend\models\search\ImageSearch;
+use common\models\tables\Images;
+use common\models\tables\Tasks;
 use Yii;
-use common\models\tables\Users;
-use backend\models\search\UserSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
- * UserController implements the CRUD actions for Users model.
+ * ImageController implements the CRUD actions for Images model.
  */
-class UserController extends AdminController
+class ImageController extends AdminController
 {
+    
     /**
-     * Lists all Users models.
+     * {@inheritdoc}
+     */
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]);
+    }
+    
+    
+    /**
+     * Lists all Images models.
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new UserSearch();
+        $searchModel = new ImageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
         return $this->render('index', [
@@ -30,7 +50,7 @@ class UserController extends AdminController
     }
     
     /**
-     * Displays a single Users model.
+     * Displays a single Images model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -42,31 +62,32 @@ class UserController extends AdminController
     }
     
     /**
-     * Creates a new Users model.
+     * Creates a new Images model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    //TODO: продумать генерацию hash пароля
     public function actionCreate() {
-        $model = new Users();
-        $roles = Roles::getArrAllRoles();
+        $model = new Image();
         
-        if ($model->load(Yii::$app->request->post())) {
-            $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash($model->password_hash);
-            $model->auth_key = Yii::$app->security->generateRandomString();
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if (\Yii::$app->request->isPost) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+            $modelName = (new \ReflectionClass($model))->getShortName();
+            $model->task_id = \Yii::$app->request->post($modelName)['task_id'];
+            $model->upload();
+            return $this->redirect(['view', 'id' => $model->id]);
         }
+
+//        $model = new Images();
+        $tasks = Tasks::getArrAllTasks();
         
         return $this->render('create', [
             'model' => $model,
-            'roles' => $roles
+            'tasks' => $tasks,
         ]);
     }
     
     /**
-     * Updates an existing Users model.
+     * Updates an existing Images model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -74,7 +95,7 @@ class UserController extends AdminController
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-        $roles = Roles::getArrAllRoles();
+        $tasks = Tasks::getArrAllTasks();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -82,12 +103,12 @@ class UserController extends AdminController
         
         return $this->render('update', [
             'model' => $model,
-            'roles' => $roles
+            'tasks' => $tasks,
         ]);
     }
     
     /**
-     * Deletes an existing Users model.
+     * Deletes an existing Images model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -100,14 +121,14 @@ class UserController extends AdminController
     }
     
     /**
-     * Finds the Users model based on its primary key value.
+     * Finds the Images model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Users the loaded model
+     * @return Images the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Users::findOne($id)) !== null) {
+        if (($model = Image::findOne($id)) !== null) {
             return $model;
         }
         

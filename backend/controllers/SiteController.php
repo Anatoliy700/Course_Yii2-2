@@ -2,15 +2,13 @@
 
 namespace backend\controllers;
 
-use backend\models\Task;
 use backend\models\Team;
 use backend\models\User;
-use yii\helpers\ArrayHelper;
-use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\LoginForm;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -69,11 +67,6 @@ class SiteController extends AdminController
      * @return string
      */
     public function actionIndex() {
-        $staticUsers = User::getStatisticUsers();
-        $teamsCount = Team::getCountTeams();
-//        var_dump(Task::getCountOverdueTasks(Task::DAY_ONE));
-        var_dump(Task::getStatisticTasks(Task::WEEK_ONE));
-        //exit();
         return $this->render('index');
     }
     

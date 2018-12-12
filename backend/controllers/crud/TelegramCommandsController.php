@@ -1,41 +1,42 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
+use backend\controllers\AdminController;
+use common\models\search\TelegramCommandsSearch;
+use common\models\tables\TelegramCommands;
 use Yii;
-use common\models\tables\ChatMessages;
-use common\models\search\ChatMessagesSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
- * ChatMessagesController implements the CRUD actions for ChatMessages model.
+ * TelegramCommandsController implements the CRUD actions for TelegramCommands model.
  */
-class ChatMessagesController extends AdminController
+class TelegramCommandsController extends AdminController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]);
     }
 
     /**
-     * Lists all ChatMessages models.
+     * Lists all TelegramCommands models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ChatMessagesSearch();
+        $searchModel = new TelegramCommandsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +46,7 @@ class ChatMessagesController extends AdminController
     }
 
     /**
-     * Displays a single ChatMessages model.
+     * Displays a single TelegramCommands model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,16 +59,16 @@ class ChatMessagesController extends AdminController
     }
 
     /**
-     * Creates a new ChatMessages model.
+     * Creates a new TelegramCommands model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ChatMessages();
+        $model = new TelegramCommands();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->update_id]);
         }
 
         return $this->render('create', [
@@ -76,7 +77,7 @@ class ChatMessagesController extends AdminController
     }
 
     /**
-     * Updates an existing ChatMessages model.
+     * Updates an existing TelegramCommands model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,7 +88,7 @@ class ChatMessagesController extends AdminController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->update_id]);
         }
 
         return $this->render('update', [
@@ -96,7 +97,7 @@ class ChatMessagesController extends AdminController
     }
 
     /**
-     * Deletes an existing ChatMessages model.
+     * Deletes an existing TelegramCommands model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +111,15 @@ class ChatMessagesController extends AdminController
     }
 
     /**
-     * Finds the ChatMessages model based on its primary key value.
+     * Finds the TelegramCommands model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ChatMessages the loaded model
+     * @return TelegramCommands the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ChatMessages::findOne($id)) !== null) {
+        if (($model = TelegramCommands::findOne($id)) !== null) {
             return $model;
         }
 

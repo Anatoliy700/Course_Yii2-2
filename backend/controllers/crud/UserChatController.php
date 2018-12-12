@@ -1,41 +1,42 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
+use backend\controllers\AdminController;
+use common\models\search\UserChatSearch;
+use common\models\tables\UserChat;
 use Yii;
-use common\models\tables\Projects;
-use common\models\search\ProjectsSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
- * ProjectController implements the CRUD actions for Projects model.
+ * UserChatController implements the CRUD actions for UserChat model.
  */
-class ProjectController extends AdminController
+class UserChatController extends AdminController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]);
     }
 
     /**
-     * Lists all Projects models.
+     * Lists all UserChat models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectsSearch();
+        $searchModel = new UserChatSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +46,7 @@ class ProjectController extends AdminController
     }
 
     /**
-     * Displays a single Projects model.
+     * Displays a single UserChat model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,16 +59,16 @@ class ProjectController extends AdminController
     }
 
     /**
-     * Creates a new Projects model.
+     * Creates a new UserChat model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Projects();
+        $model = new UserChat();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->user_id]);
         }
 
         return $this->render('create', [
@@ -76,7 +77,7 @@ class ProjectController extends AdminController
     }
 
     /**
-     * Updates an existing Projects model.
+     * Updates an existing UserChat model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,7 +88,7 @@ class ProjectController extends AdminController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->user_id]);
         }
 
         return $this->render('update', [
@@ -96,7 +97,7 @@ class ProjectController extends AdminController
     }
 
     /**
-     * Deletes an existing Projects model.
+     * Deletes an existing UserChat model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +111,15 @@ class ProjectController extends AdminController
     }
 
     /**
-     * Finds the Projects model based on its primary key value.
+     * Finds the UserChat model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Projects the loaded model
+     * @return UserChat the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Projects::findOne($id)) !== null) {
+        if (($model = UserChat::findOne($id)) !== null) {
             return $model;
         }
 

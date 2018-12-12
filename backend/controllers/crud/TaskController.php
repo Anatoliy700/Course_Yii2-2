@@ -1,21 +1,36 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
-use Yii;
-use common\models\tables\Users;
-use common\models\tables\Tasks;
-use backend\models\Task;
+use backend\controllers\AdminController;
 use backend\models\search\TaskSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use backend\models\Task;
+use common\models\tables\Tasks;
+use common\models\tables\Users;
+use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
  * TaskController implements the CRUD actions for Tasks model.
  */
 class TaskController extends AdminController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]);
+    }
   /**
    * Lists all Tasks models.
    * @return mixed

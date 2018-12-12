@@ -18,7 +18,7 @@ class TeamsUsersSearch extends TeamsUsers
     public function rules()
     {
         return [
-            [['id', 'team_id', 'user_id', 'role_id'], 'integer'],
+            [['id', 'team_id', 'user_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -62,7 +62,6 @@ class TeamsUsersSearch extends TeamsUsers
             'id' => $this->id,
             'team_id' => $this->team_id,
             'user_id' => $this->user_id,
-            'role_id' => $this->role_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);

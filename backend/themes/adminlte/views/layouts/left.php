@@ -37,16 +37,16 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
                     ['label' => 'GRUD', 'icon' => 'file-image-o', 'items' => [
-                        ['label' => 'Роли', 'icon' => 'user-secret', 'url' => ['role/index']],
-                        ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['user/index']],
-                        ['label' => 'Задачи', 'icon' => 'tasks', 'url' => ['task/index']],
-                        ['label' => 'Изображения', 'icon' => 'file-image-o', 'url' => ['image/index']],
-                        ['label' => 'Сообщения чата', 'icon' => 'file-image-o', 'url' => ['chat-messages/index']],
-                        ['label' => 'Статусы проекта', 'icon' => 'file-image-o', 'url' => ['project-statuses/index']],
-                        ['label' => 'Статусы задач', 'icon' => 'file-image-o', 'url' => ['task-statuses/index']],
-                        ['label' => 'Проекты', 'url' => ['project/index']],
-                        ['label' => 'Команды', 'url' => ['team/index']],
-                        ['label' => 'Пользователь - команда', 'url' => ['team-user/index']],
+                        ['label' => 'Роли', 'icon' => 'user-secret', 'url' => ['crud/role/index']],
+                        ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['crud/user/index']],
+                        ['label' => 'Задачи', 'icon' => 'tasks', 'url' => ['crud/task/index']],
+                        ['label' => 'Изображения', 'icon' => 'file-image-o', 'url' => ['crud/image/index']],
+                        ['label' => 'Сообщения чата', 'icon' => 'file-image-o', 'url' => ['crud/chat-messages/index']],
+                        ['label' => 'Статусы проекта', 'icon' => 'file-image-o', 'url' => ['crud/project-statuses/index']],
+                        ['label' => 'Статусы задач', 'icon' => 'file-image-o', 'url' => ['crud/task-statuses/index']],
+                        ['label' => 'Проекты', 'url' => ['crud/project/index']],
+                        ['label' => 'Команды', 'url' => ['crud/team/index']],
+                        ['label' => 'Пользователь - команда', 'url' => ['crud/team-user/index']],
                     ]],
                     ['label' => 'Телеграм', 'icon' => 'file-image-o', 'items' => [
                         ['label' => 'GRUD', 'icon' => 'file-image-o', 'items' => [

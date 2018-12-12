@@ -20,7 +20,6 @@ class m181210_145746_create_teams_users_table extends Migration
             'id' => $this->primaryKey(),
             'team_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
-            'role_id' => $this->integer()->notNull(),
             'created_at' => $this->dateTime(),
             'updated_at' => $this->dateTime(),
         ], $tableOptions);
@@ -40,16 +39,6 @@ class m181210_145746_create_teams_users_table extends Migration
             'teams_users',
             'user_id',
             'users',
-            'id',
-            'CASCADE',
-            'CASCADE'
-        );
-        
-        $this->addForeignKey(
-            'fk_team_users_role_id',
-            'teams_users',
-            'role_id',
-            'roles',
             'id',
             'CASCADE',
             'CASCADE'

@@ -1,41 +1,42 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
+use backend\controllers\AdminController;
+use common\models\search\TaskStatusesSearch;
+use common\models\tables\TaskStatuses;
 use Yii;
-use common\models\tables\TelegramCommands;
-use common\models\search\TelegramCommandsSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
- * TelegramCommandsController implements the CRUD actions for TelegramCommands model.
+ * TaskStatusesController implements the CRUD actions for TaskStatuses model.
  */
-class TelegramCommandsController extends AdminController
+class TaskStatusesController extends AdminController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]);
     }
 
     /**
-     * Lists all TelegramCommands models.
+     * Lists all TaskStatuses models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TelegramCommandsSearch();
+        $searchModel = new TaskStatusesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +46,7 @@ class TelegramCommandsController extends AdminController
     }
 
     /**
-     * Displays a single TelegramCommands model.
+     * Displays a single TaskStatuses model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,16 +59,16 @@ class TelegramCommandsController extends AdminController
     }
 
     /**
-     * Creates a new TelegramCommands model.
+     * Creates a new TaskStatuses model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new TelegramCommands();
+        $model = new TaskStatuses();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->update_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -76,7 +77,7 @@ class TelegramCommandsController extends AdminController
     }
 
     /**
-     * Updates an existing TelegramCommands model.
+     * Updates an existing TaskStatuses model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,7 +88,7 @@ class TelegramCommandsController extends AdminController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->update_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -96,7 +97,7 @@ class TelegramCommandsController extends AdminController
     }
 
     /**
-     * Deletes an existing TelegramCommands model.
+     * Deletes an existing TaskStatuses model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +111,15 @@ class TelegramCommandsController extends AdminController
     }
 
     /**
-     * Finds the TelegramCommands model based on its primary key value.
+     * Finds the TaskStatuses model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TelegramCommands the loaded model
+     * @return TaskStatuses the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TelegramCommands::findOne($id)) !== null) {
+        if (($model = TaskStatuses::findOne($id)) !== null) {
             return $model;
         }
 

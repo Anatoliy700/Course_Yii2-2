@@ -1,127 +1,122 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
+use backend\controllers\AdminController;
+use common\models\search\ChatMessagesSearch;
+use common\models\tables\ChatMessages;
 use Yii;
-use common\models\tables\TeamsUsers;
-use common\models\search\TeamsUsersSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
- * TeamsUsersController implements the CRUD actions for TeamsUsers model.
+ * ChatMessagesController implements the CRUD actions for ChatMessages model.
  */
-class TeamUserController extends AdminController
+class ChatMessagesController extends AdminController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]);
     }
-
+    
     /**
-     * Lists all TeamsUsers models.
+     * Lists all ChatMessages models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $searchModel = new TeamsUsersSearch();
+    public function actionIndex() {
+        $searchModel = new ChatMessagesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    
     /**
-     * Displays a single TeamsUsers model.
+     * Displays a single ChatMessages model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
-
+    
     /**
-     * Creates a new TeamsUsers model.
+     * Creates a new ChatMessages model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new TeamsUsers();
-
+    public function actionCreate() {
+        $model = new ChatMessages();
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        
         return $this->render('create', [
             'model' => $model,
         ]);
     }
-
+    
     /**
-     * Updates an existing TeamsUsers model.
+     * Updates an existing ChatMessages model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        
         return $this->render('update', [
             'model' => $model,
         ]);
     }
-
+    
     /**
-     * Deletes an existing TeamsUsers model.
+     * Deletes an existing ChatMessages model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
-
+        
         return $this->redirect(['index']);
     }
-
+    
     /**
-     * Finds the TeamsUsers model based on its primary key value.
+     * Finds the ChatMessages model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TeamsUsers the loaded model
+     * @return ChatMessages the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
-        if (($model = TeamsUsers::findOne($id)) !== null) {
+    protected function findModel($id) {
+        if (($model = ChatMessages::findOne($id)) !== null) {
             return $model;
         }
-
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

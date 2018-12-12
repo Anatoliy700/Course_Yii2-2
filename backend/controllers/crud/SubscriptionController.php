@@ -1,13 +1,14 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
-use Yii;
-use common\models\tables\Subscriptions;
+use backend\controllers\AdminController;
 use common\models\search\SubscriptionsSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use common\models\tables\Subscriptions;
+use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
  * SubscriptionController implements the CRUD actions for Subscriptions model.
@@ -17,16 +18,16 @@ class SubscriptionController extends AdminController
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]);
     }
 
     /**

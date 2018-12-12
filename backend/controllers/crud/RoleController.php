@@ -1,41 +1,42 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\crud;
 
+use backend\controllers\AdminController;
+use backend\models\search\RoleSearch;
+use common\models\tables\Roles;
 use Yii;
-use common\models\tables\ProjectStatuses;
-use common\models\search\ProjectStatusesSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
- * ProjectStatusesController implements the CRUD actions for ProjectStatuses model.
+ * RoleController implements the CRUD actions for Roles model.
  */
-class ProjectStatusesController extends AdminController
+class RoleController extends AdminController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+    public function behaviors() {
+        return ArrayHelper::merge(parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]);
     }
 
     /**
-     * Lists all ProjectStatuses models.
+     * Lists all Roles models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectStatusesSearch();
+        $searchModel = new RoleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +46,7 @@ class ProjectStatusesController extends AdminController
     }
 
     /**
-     * Displays a single ProjectStatuses model.
+     * Displays a single Roles model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +59,13 @@ class ProjectStatusesController extends AdminController
     }
 
     /**
-     * Creates a new ProjectStatuses model.
+     * Creates a new Roles model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ProjectStatuses();
+        $model = new Roles();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +77,7 @@ class ProjectStatusesController extends AdminController
     }
 
     /**
-     * Updates an existing ProjectStatuses model.
+     * Updates an existing Roles model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +97,7 @@ class ProjectStatusesController extends AdminController
     }
 
     /**
-     * Deletes an existing ProjectStatuses model.
+     * Deletes an existing Roles model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +111,15 @@ class ProjectStatusesController extends AdminController
     }
 
     /**
-     * Finds the ProjectStatuses model based on its primary key value.
+     * Finds the Roles model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ProjectStatuses the loaded model
+     * @return Roles the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ProjectStatuses::findOne($id)) !== null) {
+        if (($model = Roles::findOne($id)) !== null) {
             return $model;
         }
 
