@@ -1,9 +1,10 @@
 <?php
 
-use yii\widgets\DetailView;
-use \yii\helpers\Html;
 use common\models\tables\Tasks;
+use yii\helpers\Html;
+use yii\widgets\DetailView;
 
+/* @var \yii\base\View $this */
 /* @var $model \frontend\models\Task */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $imageModel \common\models\Image */
@@ -11,26 +12,26 @@ use common\models\tables\Tasks;
 /* @var $chatDataProvider \yii\data\ActiveDataProvider */
 /* @var $chatMessageModel \common\models\tables\ChatMessages */
 
-$this->title = "{$model->title} в {$model->project->name}";
-$this->params['breadcrumbs'][] = ['label' => "Задачи в {$model->project->name}", 'url' => ['index', 'project_id' => $model->project_id]];
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Задачи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-frontend\assets\TaskViewAsset::register($this);
-\app\frontend\components\chat\assets\ChatAsset::register($this);
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['frontend\assets\TaskViewAsset']->sourcePath) . '/';
+common\assets\TaskViewAsset::register($this);
+common\components\chat\assets\ChatAsset::register($this);
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['common\assets\TaskViewAsset']->sourcePath) . '/';
 ?>
 
 <div class="left-content col-lg-8">
     <?php \yii\widgets\Pjax::begin() ?>
     <p>
-        <?php if (Yii::$app->user->can('updateTask')): ?>
+        <?php if ($this->context->hasMethod('actionUpdate')): ?>
             <?= Html::a(
                 Yii::t('app/main', 'Изменить'),
                 ['update', 'id' => $model->id],
                 ['class' => 'btn btn-primary']
             ) ?>
         <?php endif; ?>
-        <?php if (Yii::$app->user->can('deleteTask')): ?>
+        <?php if ($this->context->hasMethod('actionDelete')): ?>
             <?= Html::a(
                 Yii::t('app/main', 'Удалить'),
                 ['delete', 'id' => $model->id],
@@ -42,19 +43,15 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
                     ],
                 ]) ?>
         <?php endif; ?>
-        <?php if ($model->status_id === Tasks::STATUS_COMPLETE) {
-            echo Html::tag(
-                'span',
-                'Завершено',
-                [
-                    'class' => 'btn btn-success',
-                    'disabled' => true,
-                ]
-            );
+        <?php if ($model->status_id === Tasks::STATUS_IN_WORK) {
+            $btnText = 'Завершить';
         } else {
+            $btnText = 'Завершено';
+        } ?>
+        <?php if ($model->user_id === Yii::$app->user->identity->id && $model->status_id === Tasks::STATUS_IN_WORK) {
             echo Html::a(
-                'Завершить',
-                ['task-complete', 'id' => $model->id],
+                $btnText,
+                ['completed', 'id' => $model->id],
                 [
                     'class' => 'btn btn-success',
                     'data' => [
@@ -63,6 +60,15 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
                         'pjax' => '',
                     ],
                 ]);
+        } else {
+            echo Html::tag(
+                'span',
+                $btnText,
+                [
+                    'class' => 'btn btn-success',
+                    'disabled' => true,
+                ]
+            );
         } ?>
     </p>
 
@@ -77,6 +83,11 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
                 'username',
                 'projectName',
                 'statusName',
+                'initiatorName',
+                [
+                    'attribute' => 'done_date',
+                    'visible' => !is_null($model->done_date)
+                ],
                 'created_at',
                 'updated_at',
             ]
@@ -84,7 +95,9 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
     </div>
     <?php \yii\widgets\Pjax::end() ?>
     
-    <?php \yii\widgets\Pjax::begin() ?>
+    <?php \yii\widgets\Pjax::begin([
+        'enablePushState' => false
+    ]) ?>
     <div class="task-images-wrap row">
         <?= \yii\widgets\ListView::widget([
             'dataProvider' => $dataProvider,
@@ -121,7 +134,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
             <div class="box-body">
                 <?= \yii\widgets\ListView::widget([
                     'dataProvider' => $chatDataProvider,
-                    'itemView' => '@app/components/chat/view/chatMessageItem',
+                    'itemView' => '@common/components/chat/view/chatMessageItem',
                     'itemOptions' => ['tag' => false],
                     'summary' => '',
                     'emptyText' => false,

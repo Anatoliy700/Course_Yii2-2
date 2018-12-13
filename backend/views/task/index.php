@@ -1,12 +1,7 @@
 <?php
-
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\ListView;
-
-/* @var $models \frontend\models\Task */
-/* @var $dataProvider \yii\data\ActiveDataProvider */
-/* @var $project \common\models\tables\Projects */
+/* @var \yii\web\View $this */
+/* @var \yii\data\ActiveDataProvider $dataProvider */
+/* @var \backend\models\search\TaskSearch $searchModel */
 
 \common\assets\TaskAsset::register($this);
 
@@ -14,8 +9,12 @@ $this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?php \yii\widgets\Pjax::begin()?>
 <div class="task-index">
+    <p>
+        <?= \yii\helpers\Html::a('Добавить задачу', ['create'], ['class' => 'btn btn-primary']) ?>
+    </p>
+    <?php \yii\widgets\Pjax::begin() ?>
+    
     <?= \yii\widgets\ListView::widget([
         'dataProvider' => $dataProvider,
         'layout' => "{summary}\n<div class='row'>{items}</div>\n{pager}",
@@ -27,10 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'col-lg-4',
                 'href' => \yii\helpers\Url::to(['view', 'id' => $model->id]),
                 'data' => [
-                'pjax' => 0
-            ]
+                    'pjax' => 0
+                ]
             ];
         }
     ]) ?>
+    <?php \yii\widgets\Pjax::end() ?>
 </div>
-<?php \yii\widgets\Pjax::end() ?>

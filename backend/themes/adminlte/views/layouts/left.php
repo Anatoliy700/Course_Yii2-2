@@ -36,7 +36,8 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
-                    ['label' => 'Команды', 'icon' => 'user-secret', 'url' => ['team/index']],
+                    ['label' => 'Команды', 'url' => ['team/index']],
+                    ['label' => 'Задачи', 'url' => ['task/index']],
                     ['label' => 'GRUD', 'icon' => 'file-image-o', 'items' => [
                         ['label' => 'Роли', 'icon' => 'user-secret', 'url' => ['crud/role/index']],
                         ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['crud/user/index']],
