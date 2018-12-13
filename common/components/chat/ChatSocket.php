@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\components\chat;
+namespace common\components\chat;
 
 
 use common\models\tables\ChatMessages;

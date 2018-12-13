@@ -3,7 +3,7 @@
 namespace console\controllers;
 
 
-use frontend\components\chat\ChatSocket;
+use common\components\chat\ChatSocket;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
