@@ -36,6 +36,7 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
+                    ['label' => 'Команды', 'icon' => 'user-secret', 'url' => ['team/index']],
                     ['label' => 'GRUD', 'icon' => 'file-image-o', 'items' => [
                         ['label' => 'Роли', 'icon' => 'user-secret', 'url' => ['crud/role/index']],
                         ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['crud/user/index']],
@@ -50,9 +51,9 @@
                     ]],
                     ['label' => 'Телеграм', 'icon' => 'file-image-o', 'items' => [
                         ['label' => 'GRUD', 'icon' => 'file-image-o', 'items' => [
-                            ['label' => 'Комманды', 'url' => ['telegram-commands/index']],
-                            ['label' => 'Подписки', 'url' => ['subscription/index']],
-                            ['label' => 'Чаты пользователей', 'url' => ['user-chat/index']],
+                            ['label' => 'Комманды', 'url' => ['crud/telegram-commands/index']],
+                            ['label' => 'Подписки', 'url' => ['crud/subscription/index']],
+                            ['label' => 'Чаты пользователей', 'url' => ['crud/user-chat/index']],
                         ]],
                     ]],
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],

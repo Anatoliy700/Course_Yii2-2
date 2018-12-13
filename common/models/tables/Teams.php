@@ -2,7 +2,6 @@
 
 namespace common\models\tables;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
@@ -16,14 +15,14 @@ use yii\db\Expression;
  * @property string $updated_at
  *
  * @property TeamsUsers[] $teamsUsers
+ * @property Users[] $users
  */
 class Teams extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{teams}}';
     }
     
@@ -35,12 +34,11 @@ class Teams extends \yii\db\ActiveRecord
             ],
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
@@ -49,12 +47,11 @@ class Teams extends \yii\db\ActiveRecord
             [['name'], 'unique'],
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'name' => 'Name',
@@ -63,12 +60,16 @@ class Teams extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTeamsUsers()
-    {
+    public function getTeamsUsers() {
         return $this->hasMany(TeamsUsers::className(), ['team_id' => 'id']);
+    }
+    
+    public function getUsers() {
+        return $this->hasMany(Users::class, ['id' => 'user_id'])
+            ->via('teamsUsers');
     }
 }
