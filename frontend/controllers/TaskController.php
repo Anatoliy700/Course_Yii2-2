@@ -7,12 +7,8 @@ use common\actions\task\AddImageAction;
 use common\actions\task\CompletedAction;
 use common\actions\task\DeleteImageAction;
 use common\actions\task\ViewAction;
-use common\models\tables\Projects;
-use common\models\tables\Tasks;
-use common\models\tables\TaskStatuses;
-use common\models\tables\Users;
+use common\models\TeamOptions;
 use frontend\models\search\TaskSearch;
-use frontend\models\Task;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -23,8 +19,13 @@ class TaskController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['add-image', 'delete-image', 'completed'],
+                'only' => ['index', 'add-image', 'delete-image', 'completed'],
                 'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'roles' => ['@'],
+                        'allow' => true,
+                    ],
                     [
                         'actions' => ['add-image'],
                         'roles' => ['@'],
@@ -65,15 +66,15 @@ class TaskController extends Controller
     }
     
     public function actionIndex() {
-        //$project = Projects::findOne($project_id);
         $searchModel = new TaskSearch(['pageSize' => 10]);
-        //$searchModel->setAttribute('project_id', $project_id);
-//        $searchModel->setAttribute('date', date('Y-m'));
+        $userId = \Yii::$app->user->identity->id;
+        $searchModel->setAttribute('user_id', $userId);
         $dataProvider = $searchModel->search(\Yii::$app->request->post());
+        $teamsDataProvider = (new TeamOptions())->getUserTeams($userId, true);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            //'project' => $project,
+            'teamsDataProvider' => $teamsDataProvider,
         ]);
     }
     
