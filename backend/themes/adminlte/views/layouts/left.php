@@ -36,6 +36,7 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
+                    ['label' => 'Статистика', 'url' => ['site/statistic']],
                     ['label' => 'Команды', 'url' => ['team/index']],
                     ['label' => 'Задачи', 'url' => ['task/index']],
                     ['label' => 'GRUD', 'icon' => 'file-image-o', 'items' => [

@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h2><?= $team->name ?></h2>
 
+<?php \yii\widgets\Pjax::begin()?>
 <div class="team-users-view">
     <?= \yii\grid\GridView::widget([
         'dataProvider' => $userDataProvider,
@@ -24,3 +25,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     ]) ?>
 </div>
+<?php \yii\widgets\Pjax::end() ?>

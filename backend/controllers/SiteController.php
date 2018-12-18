@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Task;
 use backend\models\Team;
 use backend\models\User;
 use common\models\LoginForm;
@@ -67,7 +68,20 @@ class SiteController extends AdminController
      * @return string
      */
     public function actionIndex() {
-        return $this->render('index');
+        return $this->redirect(['statistic']);
+//        return $this->render('index');
+    }
+    
+    public function actionStatistic($period = 'week') {
+        $usersStatistic = User::getStatisticUsers();
+        $tasksStatistic = Task::getStatisticTasks($period);
+        $countTeams = Team::getCountTeams();
+        
+        return $this->render('statistic', [
+            'usersStatistic' => $usersStatistic,
+            'tasksStatistic' => $tasksStatistic,
+            'countTeams' => $countTeams,
+        ]);
     }
     
     /**

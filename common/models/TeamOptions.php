@@ -71,9 +71,9 @@ class TeamOptions extends Model
         return null;
     }
     
-    public function getUserTeams($userId, $isDataProvider = false) {
+    public function getUserTeams($userId, $dataProviderType = false) {
         $dataProvider = (new TeamsSearch(['userId' => $userId]))->search(null);
-        if ($isDataProvider) {
+        if ($dataProviderType) {
             return $dataProvider;
         }
         return $dataProvider->query->all();

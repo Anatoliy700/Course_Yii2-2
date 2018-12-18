@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use common\models\tables\Tasks;
+use yii\data\ActiveDataProvider;
 
 class Task extends Tasks
 {
@@ -10,12 +11,18 @@ class Task extends Tasks
     const WEEK_ONE = 'WEEK';
     const MONTH_ONE = 'MONTH';
     
+    protected $periods = [
+        'day' => 'DAY',
+        'week' => 'WEEK',
+        'month' => 'MONTH'
+    ];
+    protected $defaultPeriodKey = 'week';
+    
     public $id;
     public $date;
     public $title;
     public $description;
     public $user_id;
-    static protected $taskDbClass = '\app\models\tables\Tasks';
     
     public function rules() {
         return [
@@ -48,18 +55,18 @@ class Task extends Tasks
         return Tasks::find()->count();
     }
     
-    static public function getCountDodeTasks(string $period) {
-        return count(static::getDoneTasks($period));
+    static public function getCountDoneTasks(string $key) {
+        return count((new static())->getDoneTasks($key));
     }
     
-    static public function getCountOverdueTasks($period = null) {
-        return count(static::getOverdueTasks($period));
+    static public function getCountOverdueTasks($key) {
+        return count((new static())->getOverdueTasks($key));
     }
     
-    static public function getStatisticTasks($period) {
+    static public function getStatisticTasks($key) {
         $all = static::getCountAllTasks();
-        $done = static::getCountDodeTasks($period);
-        $overdue = static::getCountOverdueTasks($period);
+        $done = static::getCountDoneTasks($key);
+        $overdue = static::getCountOverdueTasks($key);
         
         return [
             'all' => (int)$all,
@@ -69,23 +76,40 @@ class Task extends Tasks
         ];
     }
     
-    //TODO: поправить поле с датой выполнения задачи
-    static public function getDoneTasks(string $period) {
-        return Tasks::find()
-            ->andWhere('status_id = 2')
-            ->andWhere('tasks.updated_at < now()')
-            ->andWhere("tasks.updated_at >= adddate(now(), INTERVAL -1 {$period})")
-            ->all();
-    }
-    
-    static public function getOverdueTasks($period = null) {
+    public function getDoneTasks(string $key, $dataProviderType = false) {
+        $period = $this->getPeriodParam($key);
         $query = Tasks::find()
-            ->andWhere('status_id = 1')
-            ->andWhere('tasks.date < DATE(now())');
+            ->andWhere('status_id = 2')
+            ->andWhere('tasks.done_date < now()')
+            ->andWhere("tasks.done_date >= adddate(now(), INTERVAL -1 {$period})");
         
-        if (!is_null($period)) {
-            $query->andWhere("tasks.date >= adddate(DATE(now()), INTERVAL -1 {$period})");
+        if ($dataProviderType) {
+            return new ActiveDataProvider([
+                'query' => $query
+            ]);
         }
         return $query->all();
+    }
+    
+    public function getOverdueTasks($key, $dataProviderType = false) {
+        $period = $this->getPeriodParam($key);
+        $query = Tasks::find()
+            ->andWhere('status_id = 1')
+            ->andWhere('tasks.date < now()')
+            ->andWhere("tasks.date >= adddate(now(), INTERVAL -1 {$period})");
+        
+        if ($dataProviderType) {
+            return new ActiveDataProvider([
+                'query' => $query
+            ]);
+        }
+        return $query->all();
+    }
+    
+    protected function getPeriodParam($key) {
+        if (key_exists($key, $this->periods)) {
+            return $this->periods[$key];
+        }
+        return $this->periods[$this->defaultPeriodKey];
     }
 }

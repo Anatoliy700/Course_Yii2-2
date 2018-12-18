@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 
 use backend\models\search\TaskSearch;
+use backend\models\Task;
 use common\actions\task\AddImageAction;
 use common\actions\task\CompletedAction;
 use common\actions\task\DeleteImageAction;
@@ -96,5 +97,17 @@ class TaskController extends AdminController
     public function actionDelete($id) {
         (Tasks::findOne($id))->delete();
         return $this->redirect(['index']);
+    }
+    
+    public function actionDone($period = 'week') {
+        $dataProvider = (new Task())->getDoneTasks($period, true);
+        
+        return $this->render('index', ['dataProvider' => $dataProvider]);
+    }
+    
+    public function actionOverdue($period = 'week') {
+        $dataProvider = (new Task())->getOverdueTasks($period, true);
+        
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 }
