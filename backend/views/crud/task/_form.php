@@ -33,6 +33,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'project_id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'user_id')->dropDownList($users) ?>
+    
+    <?= $form->field($model, 'report')->textarea() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -22,8 +22,10 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
 ?>
 
 <div class="left-content col-lg-8">
-    <?php \yii\widgets\Pjax::begin() ?>
-    <p>
+    <?php \yii\widgets\Pjax::begin([
+        'enablePushState' => false
+    ]) ?>
+    <div class="btn-group">
         <?php if ($this->context->hasMethod('actionUpdate')): ?>
             <?= Html::a(
                 Yii::t('app/main', 'Изменить'),
@@ -49,17 +51,33 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
             $btnText = 'Завершено';
         } ?>
         <?php if ($model->user_id === Yii::$app->user->identity->id && $model->status_id === Tasks::STATUS_IN_WORK) {
-            echo Html::a(
+           
+            echo Html::submitButton(
                 $btnText,
-                ['completed', 'id' => $model->id],
                 [
                     'class' => 'btn btn-success',
+                    'form' => 'complete',
                     'data' => [
-                        'confirm' => 'Отметить задачу как завершенную?',
-                        'method' => 'post',
-                        'pjax' => '',
+                      // 'confirm' => 'Отметить задачу как завершенную?',
                     ],
                 ]);
+            $form = \yii\widgets\ActiveForm::begin([
+                'id' => 'complete',
+                'enableAjaxValidation' => true,
+                'action' => [
+                    'completed',
+                    'id' => $model->id
+                ],
+                'method' => 'post',
+                'options' => [
+                    // 'class' => 'col-lg-2',
+                    'data' => [
+                        'pjax' => '',
+                    ],
+                ]
+            ]);
+            $report = $form->field($model, 'report')->textarea(['form' => 'complete']);
+            \yii\widgets\ActiveForm::end();
         } else {
             echo Html::tag(
                 'span',
@@ -70,7 +88,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
                 ]
             );
         } ?>
-    </p>
+    </div>
 
 
     <div class="task-wrap">
@@ -86,12 +104,17 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl($this->assetBundles['
                 'initiatorName',
                 [
                     'attribute' => 'done_date',
-                    'visible' => !is_null($model->done_date)
+                    'visible' => $model->status_id === Tasks::STATUS_COMPLETE && !is_null($model->done_date)
                 ],
                 'created_at',
                 'updated_at',
+                [
+                    'attribute' => 'report',
+                    'visible' => $model->status_id === Tasks::STATUS_COMPLETE
+                ]
             ]
         ]) ?>
+        <?php echo isset($report) ? $report : '' ?>
     </div>
     <?php \yii\widgets\Pjax::end() ?>
     

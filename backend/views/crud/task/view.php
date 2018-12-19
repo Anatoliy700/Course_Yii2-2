@@ -35,6 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'status_id',
             'project_id',
+            'done_date',
+            'report',
             'created_at',
             'updated_at',
         ],
