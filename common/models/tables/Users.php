@@ -21,6 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property Teams[] $teams
  * @property Tasks[] $tasks
  * @property Roles $role
  */
@@ -79,6 +80,21 @@ class Users extends ActiveRecord
      */
     public function getTasks() {
         return $this->hasMany(Tasks::className(), ['user_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeamUser() {
+        return $this->hasMany(TeamsUsers::class, ['user_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeams() {
+        return $this->hasMany(Teams::class, ['id' => 'team_id'])
+            ->via('teamUser');
     }
     
     /**

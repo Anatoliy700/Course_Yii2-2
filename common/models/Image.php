@@ -4,17 +4,20 @@ namespace common\models;
 
 
 use common\models\tables\Images;
-use phpDocumentor\Reflection\Types\Parent_;
+use dosamigos\transliterator\TransliteratorHelper;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Inflector;
-use dosamigos\transliterator\TransliteratorHelper;
 use yii\helpers\BaseFileHelper;
+use yii\helpers\Inflector;
 
 class Image extends Images
 {
     /* @var \yii\web\UploadedFile */
     public $image;
+    protected $path = [
+        'origin' => '@imgPath/task/',
+        'small' => '@imgPath/task/small/'
+    ];
     
     public function rules() {
         $rules = [
@@ -33,10 +36,10 @@ class Image extends Images
         $this->name = $this->translit($this->image->getBaseName()) . '.' . $this->image->getExtension();
         $this->task_id = (int)$id;
         if ($this->validate()) {
-            $fileName = '@imgPath/task/' . $this->name;
+            $fileName = $this->path['origin'] . $this->name;
             $this->image->saveAs(\Yii::getAlias($fileName));
             \yii\imagine\Image::thumbnail($fileName, '200', null)
-                ->save(\Yii::getAlias('@imgPath/task/small/' . $this->name));
+                ->save(\Yii::getAlias($this->path['small'] . $this->name));
             $model = new Images();
             $model->setAttributes($this->attributes);
             if ($model->save()) {
@@ -58,8 +61,8 @@ class Image extends Images
     }
     
     public function delete() {
-        BaseFileHelper::unlink(\Yii::getAlias('@imgPath/task/') . $this->name);
-        BaseFileHelper::unlink(\Yii::getAlias('@imgPath/task/small/') . $this->name);
+        BaseFileHelper::unlink(\Yii::getAlias($this->path['origin'] . $this->name));
+        BaseFileHelper::unlink(\Yii::getAlias($this->path['small'] . $this->name));
         return parent::delete();
     }
     

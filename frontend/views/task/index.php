@@ -1,37 +1,56 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ListView;
 
 /* @var $models \frontend\models\Task */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $project \common\models\tables\Projects */
+/* @var \yii\data\ActiveDataProvider $teamsDataProvider */
 
-$this->title = "Задачи в {$project->name}";
-$this->params['breadcrumbs'][] = ['label' => 'Проекты', 'url' => ["/project"]];
+\common\assets\TaskAsset::register($this);
+
+$this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+    <h3>Мои команды</h3>
 
-<p>
-    <?php if (Yii::$app->user->can('createTask')): ?>
-        <?= Html::a(Yii::t('app/main', 'Создать'), ['create', 'project_id' => $project->id], ['class' => 'btn btn-success']) ?>
-    <?php endif; ?>
-   
-</p>
+<?= ListView::widget([
+    'dataProvider' => $teamsDataProvider,
+    'layout' => "<div class='row'>{items}</div>",
+    'itemView' => 'itemTeam',
+    'emptyText' => 'Вы не учавствуете ни в одной команде',
+    'itemOptions' => function ($model) {
+        /* @var \common\models\tables\Tasks $model */
+        return [
+            'tag' => 'a',
+            'class' => 'col-lg-1',
+            'href' => \yii\helpers\Url::to(['team/view', 'id' => $model->id]),
+            'data' => [
+                'pjax' => 0
+            ]
+        ];
+    },
+]) ?>
 
-
-<div class="tasks-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    
-    
-    <?= ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemView' => 'item',
-        'layout' => "{summary}\n<div class='row'>{items}</div>\n{pager}",
-        'itemOptions' => function ($model) {
-            return ['tag' => 'a', 'href' => Url::to(['task/view', 'id' => $model->id])];
-        },
-    ]) ?>
-
-</div>
+<?php \yii\widgets\Pjax::begin() ?>
+    <div class="task-index">
+        <?= \yii\widgets\ListView::widget([
+            'dataProvider' => $dataProvider,
+            'layout' => "{summary}\n<div class='row'>{items}</div>\n{pager}",
+            'itemView' => 'item',
+            'emptyText' => 'У вас нет задач',
+            'itemOptions' => function ($model) {
+                /* @var \common\models\tables\Tasks $model */
+                return [
+                    'tag' => 'a',
+                    'class' => 'col-lg-4',
+                    'href' => \yii\helpers\Url::to(['view', 'id' => $model->id]),
+                    'data' => [
+                        'pjax' => 0
+                    ]
+                ];
+            },
+        ]) ?>
+    </div>
+<?php \yii\widgets\Pjax::end() ?>

@@ -2,12 +2,14 @@
 
 namespace backend\controllers;
 
-use yii\helpers\ArrayHelper;
-use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use backend\models\Task;
+use backend\models\Team;
+use backend\models\User;
 use common\models\LoginForm;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -18,7 +20,7 @@ class SiteController extends AdminController
      * {@inheritdoc}
      */
     public function behaviors() {
-       $behaviors = [
+        $behaviors = [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
@@ -45,7 +47,7 @@ class SiteController extends AdminController
                 ],
             ],
         ];
-    
+        
         return ArrayHelper::merge(parent::behaviors(), $behaviors);
     }
     
@@ -66,7 +68,20 @@ class SiteController extends AdminController
      * @return string
      */
     public function actionIndex() {
-        return $this->render('index');
+        return $this->redirect(['statistic']);
+//        return $this->render('index');
+    }
+    
+    public function actionStatistic($period = 'week') {
+        $usersStatistic = User::getStatisticUsers();
+        $tasksStatistic = Task::getStatisticTasks($period);
+        $countTeams = Team::getCountTeams();
+        
+        return $this->render('statistic', [
+            'usersStatistic' => $usersStatistic,
+            'tasksStatistic' => $tasksStatistic,
+            'countTeams' => $countTeams,
+        ]);
     }
     
     /**

@@ -1,23 +1,30 @@
 <?php
+/* @var $this yii\web\View */
+
+/* @var $model \common\models\tables\Tasks */
+
+/* @var $usersSelect array */
+/* @var $projectsSelect array */
+
+/* @var $statusesSelect array */
 
 use yii\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model common\models\tables\Tasks */
-/* @var $users array */
-
-$this->title = 'Create Tasks';
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
+$this->title = 'Добавить задачу';
+$this->params['breadcrumbs'][] = [
+    'label' => 'Задачи',
+    'url' => ['index']
+];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tasks-create">
 
-  <h1><?= Html::encode($this->title) ?></h1>
-  
-  <?= $this->render('_form', [
-    'model' => $model,
-    'users' => $users
-  ]) ?>
-
+<div class="tasks-create col-lg-4">
+    <h1><?= Html::encode($this->title) ?></h1>
+    
+    <?= $this->render('_form', [
+        'model' => $model,
+        'usersSelect' => $usersSelect,
+        'projectsSelect' => $projectsSelect,
+        'statusesSelect' => $statusesSelect,
+    ]) ?>
 </div>

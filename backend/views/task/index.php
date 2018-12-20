@@ -1,68 +1,82 @@
 <?php
+/* @var \yii\web\View $this */
+/* @var \yii\data\ActiveDataProvider $dataProvider */
+
+/* @var \backend\models\search\TaskSearch $searchModel */
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\search\TaskSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+\common\assets\TaskAsset::register($this);
 
-$this->title = 'Tasks';
+$this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="tasks-index">
-    
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+$defaultBtnClass = 'btn-primary';
+$defaultBtnClassActive = 'btn-success';
+$btnOptions = [
+    'day' => ['class' => "btn {$defaultBtnClass}"],
+    'week' => ['class' => "btn {$defaultBtnClass}"],
+    'month' => ['class' => "btn {$defaultBtnClass}"],
+];
+$btnNames = [
+    'index' => 'Все',
+    'done' => 'Выполненные',
+    'overdue' => 'Просроченные',
+];
+$period = \Yii::$app->request->get('period');
+if (isset($period) && isset($btnOptions[$period])) {
+    $options = &$btnOptions[$period];
+    Html::removeCssClass($options, $defaultBtnClass);
+    Html::addCssClass($options, $defaultBtnClassActive);
+}
+
+?>
+
+<?php \yii\widgets\Pjax::begin() ?>
+<div class="clearfix">
+    <div class="btn-filter-primary btn-group pull-right">
+        <button type="button" class="btn btn-info"><?= $btnNames[$this->context->action->id] ?></button>
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="index">Все</a></li>
+            <li><a href="done">Выполненные</a></li>
+            <li><a href="overdue">Просроченные</a></li>
+        </ul>
+    </div>
+</div>
+<?php if ($this->context->action->id === 'done' || $this->context->action->id === 'overdue'): ?>
+    <div class="clearfix">
+        <div class="btn-filter-secondary btn-group pull-right">
+            <?= Html::a('День', [$this->context->action->id, 'period' => 'day'], $btnOptions['day']) ?>
+            <?= Html::a('Неделя', [$this->context->action->id, 'period' => 'week'], $btnOptions['week']) ?>
+            <?= Html::a('Месяц', [$this->context->action->id, 'period' => 'month'], $btnOptions['month']) ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="task-index">
     <p>
-        <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= \yii\helpers\Html::a('Добавить задачу', ['create'], ['class' => 'btn btn-primary']) ?>
     </p>
-    <?php \yii\widgets\Pjax::begin() ?>
-    <?php $form = \yii\widgets\ActiveForm::begin(
-        [
-            'method' => 'get',
-            'options' => [
-                'data-pjax' => ''
-            ]
-        ]
-    ) ?>
-    <?= $form->field($searchModel, 'date')->widget(\yii\jui\DatePicker::class, [
-        'dateFormat' => 'yyyy-MM',
-        'options' => [
-            'class' => 'form-control',
-            'autocomplete' => 'off',
-            'data-pjax' => ''
-        ]
-    ]) ?>
-    <?= $form->field($searchModel, 'username')->textInput() ?>
-    <?= Html::submitButton('Отфильтровать') ?>
-    <?php \yii\widgets\ActiveForm::end() ?>
-    
     
     <?= \yii\widgets\ListView::widget([
         'dataProvider' => $dataProvider,
+        'layout' => "{summary}\n<div class='row'>{items}</div>\n{pager}",
         'itemView' => 'item',
         'itemOptions' => function ($model) {
-            return ['tag' => 'a', 'href' => \yii\helpers\Url::to(['view', 'id' => $model->id])];
-        },
+            /* @var \common\models\tables\Tasks $model */
+            return [
+                'tag' => 'a',
+                'class' => 'col-lg-4',
+                'href' => \yii\helpers\Url::to(['view', 'id' => $model->id]),
+                'data' => [
+                    'pjax' => 0
+                ]
+            ];
+        }
     ]) ?>
     <?php \yii\widgets\Pjax::end() ?>
-
-
-    <!--  --><? //= GridView::widget([
-    //    'dataProvider' => $dataProvider,
-    //    'filterModel' => $searchModel,
-    //    'columns' => [
-    //      ['class' => 'yii\grid\SerialColumn'],
-    //
-    //      'id',
-    //      'title',
-    //      'description',
-    //      'date',
-    ////            'user_id',
-    //      'username',
-    //
-    //      ['class' => 'yii\grid\ActionColumn'],
-    //    ],
-    //  ]); ?>
 </div>

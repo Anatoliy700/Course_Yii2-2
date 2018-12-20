@@ -1,11 +1,11 @@
 <?php
 return [
-//    'language' => 'ru-RU',
+    'language' => 'ru-RU',
     'bootstrap' => ['telegramHandler'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
-        '@imgPath' => dirname(dirname(__DIR__)) . '/common/images',
+        '@imgPath' => dirname(dirname(__DIR__)) . '/common/resources/img',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [

@@ -5,6 +5,7 @@ namespace common\models\tables;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "projects".
@@ -111,6 +112,10 @@ class Projects extends \yii\db\ActiveRecord
         return $this
             ->hasMany(Tasks::className(), ['project_id' => 'id'])
             ->where(['status_id' => Tasks::STATUS_COMPLETE]);
+    }
+    
+    static public function getProjectsSelect() {
+        return ArrayHelper::map(static::find()->all(), 'id', 'name');
     }
     
 }
